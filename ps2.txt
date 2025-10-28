@@ -1,0 +1,62 @@
+<?php
+// Database configuration
+$host = "localhost";     // or the server IP
+$user = "root";          // your MySQL username
+$password = "";          // your MySQL password (default is empty for XAMPP)
+$database = "corp_db";   // your database name
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error); // report connection error
+}
+echo "Connected successfully<br>";
+
+// Example query: Fetch all employees
+$sql = "SELECT * FROM Employee";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "ID: " . $row["emp_id"]. " - Name: " . $row["first_name"]. " " . $row["last_name"]. 
+             " - Designation: " . $row["designation"]. " - Salary: " . $row["salary"]. 
+             " - Department: " . $row["dept"]. "<br>";
+    }
+} else {
+    echo "0 results";
+}
+
+// Close connection
+$conn->close();
+?>
+
+
+
+
+<?php
+// db_test.php - minimal PDO connection and query (MySQL)
+$host = '127.0.0.1';
+$db   = 'corp_db';
+$user = 'root';
+$pass = ''; // set your password
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+    $stmt = $pdo->query("SELECT emp_id, first_name, last_name, designation, salary FROM Employee LIMIT 10");
+    $rows = $stmt->fetchAll();
+    header('Content-Type: application/json');
+    echo json_encode($rows, JSON_PRETTY_PRINT);
+} catch (PDOException $e) {
+    echo "DB Connection failed: " . $e->getMessage();
+}
+
