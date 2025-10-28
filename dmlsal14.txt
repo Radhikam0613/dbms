@@ -1,0 +1,24 @@
+USE corp_db;
+
+-- 1 employees with salary higher than employee whose last_name = 'Singh'
+-- (if multiple 'Singh', use one — this uses LIMIT 1)
+SELECT e.first_name,e.last_name,e.salary FROM Employee e
+WHERE e.salary > (SELECT salary FROM Employee WHERE last_name='Singh' LIMIT 1);
+
+-- 2 employees who have a manager and work for departments based in US (use earlier Location table)
+SELECT e.first_name,e.last_name FROM Employee e
+JOIN Departments d ON e.dept = d.Department_name
+JOIN Locations l ON d.location_id = l.location_id
+WHERE e.emp_id IS NOT NULL AND l.country_id = 'US';
+
+-- 3 employees whose salary > average (global)
+SELECT first_name,last_name,salary FROM Employee WHERE salary > (SELECT AVG(salary) FROM Employee);
+
+-- 4 self-join to get manager last name
+SELECT e.employee_id, e.last_name, e.manager_id, m.last_name AS manager_last
+FROM Employee e
+LEFT JOIN Employee m ON e.manager_id = m.emp_id;
+
+-- 5 employees hired after 'Jones'
+SELECT e.first_name,e.last_name,e.DoJ FROM Employee e
+WHERE e.DoJ > (SELECT DoJ FROM Employee WHERE last_name='Jones' LIMIT 1);
