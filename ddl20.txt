@@ -1,0 +1,31 @@
+USE corp_db;
+
+-- ensure data present in Account and Customer tables
+INSERT INTO Customer(Name, Cust_Address, Phone_no, Email_ID, Age) VALUES ('Gita','Pune','8888888888','gita@example.com',45);
+INSERT INTO Account(Branch_ID, CustID, date_open, Account_type, Balance) VALUES (1,3,'2018-08-16','Saving Account',25000);
+INSERT INTO Account(Branch_ID, CustID, date_open, Account_type, Balance) VALUES (1,3,'2018-02-16','Loan',500000);
+
+-- 3 view: Saving account open date 2018-08-16
+DROP VIEW IF EXISTS SavingAccount;
+CREATE VIEW SavingAccount AS
+SELECT c.CustID, c.Name, a.Account_no, a.date_open, a.Balance
+FROM Customer c JOIN Account a ON c.CustID = a.CustID
+WHERE a.date_open = '2018-08-16' AND a.Account_type = 'Saving Account';
+
+-- 4 update view example (updates Customer table)
+UPDATE Customer SET Cust_Address = 'Pune City' WHERE CustID = 3;
+
+-- 5 Loan account view open date 2018-02-16
+DROP VIEW IF EXISTS LoanAccount;
+CREATE VIEW LoanAccount AS
+SELECT c.CustID, c.Name, a.Account_no, a.date_open, a.Balance
+FROM Customer c JOIN Account a ON c.CustID = a.CustID
+WHERE a.date_open = '2018-02-16' AND a.Account_type = 'Loan';
+
+-- 6-7 indexes (explicit)
+CREATE INDEX idx_customer_name ON Customer(Name);
+CREATE INDEX idx_branch_name ON Branch(Branch_Name);
+
+-- 8 sequence for Customer note:
+-- In Oracle: CREATE SEQUENCE cust_seq START WITH 1;
+-- In MySQL: use AUTO_INCREMENT; we used AUTO_INCREMENT for CustID.
