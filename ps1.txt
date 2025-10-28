@@ -1,0 +1,65 @@
+-- USE your MySQL database first
+CREATE DATABASE IF NOT EXISTS corp_db; 
+USE corp_db;
+
+-- Employee table
+DROP TABLE IF EXISTS Employee;
+CREATE TABLE Employee (
+  emp_id INT PRIMARY KEY AUTO_INCREMENT,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  designation VARCHAR(50),
+  salary DECIMAL(12,2),
+  dept VARCHAR(50)
+);
+
+-- Salary backup table
+DROP TABLE IF EXISTS Salary_Backup;
+CREATE TABLE Salary_Backup (
+  backup_id INT PRIMARY KEY AUTO_INCREMENT,
+  emp_id INT,
+  old_salary DECIMAL(12,2),
+  new_salary DECIMAL(12,2),
+  salary_difference DECIMAL(12,2),
+  changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- sample data
+INSERT INTO Employee(first_name,last_name,designation,salary,dept) VALUES
+('Alice','Khan','Developer',60000,'IT'),
+('Bob','Sharma','CEO',200000,'Management'),
+('Carol','Iyer','Manager',90000,'HR');
+
+-- Trigger: record salary change AFTER UPDATE
+DROP TRIGGER IF EXISTS trg_salary_update;
+DELIMITER $$
+CREATE TRIGGER trg_salary_update
+AFTER UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+  IF NEW.salary <> OLD.salary THEN
+    INSERT INTO Salary_Backup(emp_id, old_salary, new_salary, salary_difference)
+    VALUES(NEW.emp_id, OLD.salary, NEW.salary, NEW.salary-OLD.salary);
+  END IF;
+END$$
+DELIMITER ;
+
+-- Trigger: prevent delete of CEO
+DROP TRIGGER IF EXISTS trg_prevent_delete;
+DELIMITER $$
+CREATE TRIGGER trg_prevent_delete
+BEFORE DELETE ON Employee
+FOR EACH ROW
+BEGIN
+  IF OLD.designation = 'CEO' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Cannot delete CEO';
+  END IF;
+END$$
+DELIMITER ;
+
+-- test update
+UPDATE Employee SET salary = 65000 WHERE first_name='Alice';
+SELECT * FROM Salary_Backup;
+
+-- test delete (this will fail)
+-- DELETE FROM Employee WHERE first_name='Bob';
