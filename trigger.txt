@@ -64,3 +64,89 @@ SELECT * FROM Salary_Backup;
 
 -- test delete (this will fail)
 -- DELETE FROM Employee WHERE first_name='Bob';
+
+
+
+⚙️ 1. Trigger
+
+→ A database object that automatically executes when an event (INSERT, UPDATE, DELETE) occurs on a table.
+
+🧩 2. Stored Procedure
+
+→ A named block of SQL statements stored in the database that can be called to perform a specific task.
+
+📦 3. Function
+
+→ A block of code that returns a single value after performing calculations or operations.
+
+🧮 4. Cursor
+
+→ A pointer that lets you process query results row by row in PL/SQL or similar languages.
+
+🔗 5. Join
+
+→ Combines related data from multiple tables using a common column (like INNER JOIN, LEFT JOIN, etc.).
+
+📊 6. Subquery
+
+→ A query inside another query used to filter or compute results dynamically.
+
+🧱 7. DDL (Data Definition Language)
+
+→ Defines database structure using commands like CREATE, ALTER, DROP, and TRUNCATE.
+
+✏️ 8. DML (Data Manipulation Language)
+
+→ Manipulates data in tables using commands like INSERT, UPDATE, DELETE, and SELECT.
+
+🌐 9. CRUD Operations
+
+→ The four basic operations: Create, Read, Update, Delete used to manage records in any database.
+
+💻 10. Database Connectivity (PHP / Java)
+
+→ Linking an external programming language with a database to send queries and fetch results.
+
+🧮 11. Aggregation
+
+→ Performing summary calculations like SUM, COUNT, AVG, or MAX on groups of data.
+
+⚡ 12. Index
+
+→ A data structure that speeds up search operations in a table based on specific columns.
+
+🧾 13. View
+
+→ A virtual table created by saving a query result for easier access or security purposes.
+
+🗃️ 14. PL/SQL Block
+
+→ A structured program block in Oracle combining SQL statements with procedural logic (DECLARE–BEGIN–END).
+
+⚙️ 15. Anonymous Block
+
+→ A temporary PL/SQL block without a name, executed once and not stored in the database.
+
+☁️ 16. MapReduce
+
+→ A two-step process (map + reduce) for processing large data sets by mapping key–value pairs and reducing them to summaries.
+
+🌍 17. MongoDB Collection
+
+→ The NoSQL equivalent of a table, containing multiple JSON-like documents.
+
+🧾 18. Document (MongoDB)
+
+→ A single record in MongoDB, stored in BSON (Binary JSON) format.
+
+🔄 19. Replace / Update in MongoDB
+
+→ Used to modify or completely replace existing documents that match a given condition.
+
+🧮 20. Delete Operations
+
+→ Commands that remove records — DELETE in SQL or deleteOne() / deleteMany() in MongoDB.
+
+💬 21. Exception Handling (PL/SQL)
+
+→ A mechanism to catch and manage runtime errors using EXCEPTION WHEN ... THEN blocks.
