@@ -1,3 +1,4 @@
+A database object that automatically executes when an event (INSERT, UPDATE, DELETE) occurs on a table.
 -- USE your MySQL database first
 CREATE DATABASE IF NOT EXISTS corp_db; 
 USE corp_db;
