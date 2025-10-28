@@ -1,0 +1,53 @@
+USE corp_db;
+
+-- Customer & Account tables
+DROP TABLE IF EXISTS Customer;
+CREATE TABLE Customer (
+  CustID INT PRIMARY KEY AUTO_INCREMENT,
+  Name VARCHAR(100),
+  Cust_Address VARCHAR(200),
+  Phone_no VARCHAR(20),
+  Email_ID VARCHAR(100),
+  Age INT
+);
+
+DROP TABLE IF EXISTS Account;
+CREATE TABLE Account (
+  Account_no INT PRIMARY KEY AUTO_INCREMENT,
+  Branch_ID INT,
+  CustID INT,
+  date_open DATE,
+  Account_type VARCHAR(50),
+  Balance DECIMAL(12,2),
+  FOREIGN KEY (CustID) REFERENCES Customer(CustID)
+);
+
+-- sample data
+INSERT INTO Customer(Name, Cust_Address, Phone_no, Email_ID, Age) VALUES
+('Anita','Pune','9876543210','anita@example.com',40),
+('Bharat','Mumbai','9123456780','bharat@example.com',30);
+INSERT INTO Account(Branch_ID, CustID, date_open, Account_type, Balance) VALUES
+(1,1,'2018-01-01','Saving Account',80000),
+(1,2,'2019-05-20','Current Account',15000);
+
+-- 1. alter column length and set NOT NULL
+ALTER TABLE Customer MODIFY COLUMN Email_ID VARCHAR(120) NOT NULL;
+
+-- 2. total customers with balance > 50000
+SELECT COUNT(DISTINCT c.CustID) AS cnt FROM Customer c
+JOIN Account a ON c.CustID = a.CustID WHERE a.Balance > 50000;
+
+-- 3. average balance for Saving Account
+SELECT AVG(Balance) AS avg_saving FROM Account WHERE Account_type = 'Saving Account';
+
+-- 4. customers in Pune or name starts with 'A'
+SELECT * FROM Customer WHERE Cust_Address LIKE '%Pune%' OR Name LIKE 'A%';
+
+-- 5. create Saving_Account table from Account
+DROP TABLE IF EXISTS Saving_Account;
+CREATE TABLE Saving_Account AS
+SELECT Account_no, Branch_ID, CustID, date_open, Balance FROM Account WHERE Account_type = 'Saving Account';
+
+-- 6. display customer details Age wise with balance>=20000
+SELECT c.*, a.Balance FROM Customer c JOIN Account a ON c.CustID = a.CustID
+WHERE a.Balance >= 20000 ORDER BY c.Age;
