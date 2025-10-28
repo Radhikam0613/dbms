@@ -1,0 +1,27 @@
+USE corp_db;
+
+-- 1 add column Email_Address
+ALTER TABLE Customer ADD COLUMN Email_Address VARCHAR(100);
+
+-- 2 rename Email_Address to Email_ID
+ALTER TABLE Customer CHANGE Email_Address Email_ID VARCHAR(100);
+
+-- sample account and customer data already present
+
+-- 3 customer with highest balance (join)
+SELECT c.* FROM Customer c JOIN Account a ON c.CustID = a.CustID ORDER BY a.Balance DESC LIMIT 1;
+
+-- 4 customer with lowest balance for Saving Account
+SELECT c.* FROM Customer c JOIN Account a ON c.CustID = a.CustID
+WHERE a.Account_type = 'Saving Account' ORDER BY a.Balance ASC LIMIT 1;
+
+-- 5 customers in Pune and age > 35
+SELECT * FROM Customer WHERE Cust_Address LIKE '%Pune%' AND Age > 35;
+
+-- 6 Cust_ID, Name, Age ascending
+SELECT CustID, Name, Age FROM Customer ORDER BY Age ASC;
+
+-- 7 Name and Branch ID grouped by Account_type
+SELECT a.Account_type, c.Name, a.Branch_ID
+FROM Customer c JOIN Account a ON c.CustID = a.CustID
+GROUP BY a.Account_type, c.Name, a.Branch_ID;
