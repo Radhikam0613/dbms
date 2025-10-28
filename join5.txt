@@ -1,0 +1,26 @@
+-- 1. employees who earn more than avg and work in IT departments
+SELECT e.first_name,e.last_name,e.salary
+FROM Employee e
+JOIN Departments d ON e.dept = d.Department_name
+WHERE e.salary > (SELECT AVG(salary) FROM Employee) AND d.Department_name LIKE '%IT%';
+
+-- 2. employees who earn same as minimum salary for all employees
+SELECT e.first_name,e.last_name,e.salary
+FROM Employee e
+WHERE e.salary = (SELECT MIN(salary) FROM Employee);
+
+-- 3. employees above avg for their department
+SELECT e.emp_id, e.first_name, e.last_name, e.salary
+FROM Employee e
+WHERE e.salary > (
+  SELECT AVG(salary) FROM Employee WHERE dept = e.dept
+);
+
+-- 4. department name, manager name, city
+SELECT d.Department_name, m.manager_name, l.city
+FROM Departments d
+LEFT JOIN Manager m ON d.manager_id = m.manager_id
+LEFT JOIN Locations l ON d.location_id = l.location_id;
+
+-- 5. managers with experience > 15 years
+SELECT manager_id, manager_name, experience_years FROM Manager WHERE experience_years > 15;
