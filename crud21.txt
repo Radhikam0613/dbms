@@ -1,0 +1,33 @@
+use college_db;
+db.Student.drop();
+
+// sample data
+db.Student.insertMany([
+  { Roll_No: "A10", Name: "Ria",   Class: "TE", Marks: 78, Address: "Pune",  Enrolled_Courses: ["DBMS","TOC"] },
+  { Roll_No: "B11", Name: "Sahil", Class: "SE", Marks: 82, Address: "Mumbai",Enrolled_Courses: ["DS","OS"] },
+  { Roll_No: "C12", Name: "Neha",  Class: "BE", Marks: 55, Address: "Pune",  Enrolled_Courses: ["TOC"] },
+  { Roll_No: "D13", Name: "Rohit", Class: "TE", Marks: 95, Address: "Pune",  Enrolled_Courses: ["DBMS"] },
+  { Roll_No: "E14", Name: "Gita",  Class: "TE", Marks: 40, Address: "Delhi", Enrolled_Courses: ["TOC","DBMS"] }
+]);
+
+// 1. students enrolled in DBMS or TOC
+db.Student.find({ Enrolled_Courses: { $in: ["DBMS", "TOC"] } });
+
+// 2. roll numbers & class where marks >50 or class='TE'
+db.Student.find({ $or: [ { Marks: { $gt: 50 } }, { Class: "TE" } ] });
+
+// 3. replace record for Roll_No A10
+db.Student.replaceOne(
+  { Roll_No: "A10" },
+  { Roll_No: "A10", Name: "Ria Kapoor", Class: "TE", Marks: 88,
+    Address: "Pune", Enrolled_Courses: ["DBMS","TOC"] }
+);
+
+// 4. show 3rd & 4th highest marks
+db.Student.find().sort({ Marks: -1 }).skip(2).limit(2);
+
+// 5. delete students with marks <20
+db.Student.deleteMany({ Marks: { $lt: 20 } });
+
+// 6. delete one (first) document
+db.Student.deleteOne({});
