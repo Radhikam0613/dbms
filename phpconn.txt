@@ -14,21 +14,6 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully<br>";
 
-// Example query: Fetch all employees
-$sql = "SELECT * FROM Employee";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "ID: " . $row["emp_id"]. " - Name: " . $row["first_name"]. " " . $row["last_name"]. 
-             " - Designation: " . $row["designation"]. " - Salary: " . $row["salary"]. 
-             " - Department: " . $row["dept"]. "<br>";
-    }
-} else {
-    echo "0 results";
-}
-
 // Close connection
 $conn->close();
 ?>
