@@ -1,0 +1,14 @@
+// MongoConnectExample.java
+import com.mongodb.client.*;
+import org.bson.Document;
+
+public class MongoConnectExample {
+    public static void main(String[] args) {
+        String uri = "mongodb://localhost:27017";
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase db = mongoClient.getDatabase("movies_db");
+            MongoCollection<Document> col = db.getCollection("Movies_Data");
+            col.find().limit(5).forEach(doc -> System.out.println(doc.toJson()));
+        }
+    }
+}
