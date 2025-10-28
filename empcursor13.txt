@@ -1,0 +1,40 @@
+-- Employee table (already created earlier in PL/SQL sections)
+-- Ensure sample data exists:
+INSERT INTO Employee(emp_id, first_name, last_name, job_title, dept_id, salary, DoJ) VALUES (201,'Vikram','Singh','Manager',5,120000,DATE '2010-05-10');
+COMMIT;
+
+-- 1 explicit cursor salary > 50000
+DECLARE
+  CURSOR c IS SELECT emp_id, first_name, last_name, salary FROM Employee WHERE salary > 50000;
+  rec c%ROWTYPE;
+BEGIN
+  OPEN c;
+  LOOP
+    FETCH c INTO rec;
+    EXIT WHEN c%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE('Employee '||rec.first_name||' Salary '||rec.salary);
+  END LOOP;
+  CLOSE c;
+END;
+/
+
+-- 2 implicit cursor to count tuples
+DECLARE
+  v_count NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO v_count FROM Employee;
+  DBMS_OUTPUT.PUT_LINE('Total employees: ' || v_count);
+END;
+/
+
+-- 3 parameterized cursor for employee salary by id
+DECLARE
+  CURSOR c(emp NUMBER) IS SELECT salary FROM Employee WHERE emp_id = emp;
+  v_sal NUMBER;
+BEGIN
+  OPEN c(201);
+  FETCH c INTO v_sal;
+  CLOSE c;
+  DBMS_OUTPUT.PUT_LINE('Salary of 201: '||v_sal);
+END;
+/
