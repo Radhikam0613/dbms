@@ -20,3 +20,9 @@ db.Book.mapReduce(mapB, reduceA, { out: { inline: 1 } });
 // 3 Author wise books price > 300
 var mapC = function(){ if(this.price > 300) emit(this.Author_name, this.Title); };
 db.Book.mapReduce(mapC, reduceA, { out: { inline: 1 } });
+
+
+MapReduce is a data processing framework used to handle large amounts of data by dividing the work into two main phases:
+
+🧭 Map → filters and transforms the data
+🧮 Reduce → aggregates or combines the results
