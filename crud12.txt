@@ -1,0 +1,25 @@
+use social_db;
+db.Social_Media.drop();
+
+var docs = [
+  { User_Id: 1, User_Name: 'alice', No_of_Posts: 150, No_of_Friends: 12, Friends_List: [2,3,4], Interests: ['coding','music'] },
+  { User_Id: 2, User_Name: 'bob', No_of_Posts: 50, No_of_Friends: 8, Friends_List: [1,3], Interests: ['sports'] },
+  { User_Id: 3, User_Name: 'carol', No_of_Posts: 250, No_of_Friends: 25, Friends_List: [1,2,4,5], Interests: ['coding','travel'] }
+  // add more to reach ~20 in practice; kept small here
+];
+db.Social_Media.insertMany(docs);
+
+// 1 list all users nicely
+db.Social_Media.find().forEach(printjson);
+
+// 2 users with posts > 100
+db.Social_Media.find({ No_of_Posts: { $gt: 100 } }).forEach(printjson);
+
+// 3 user names and friends_list
+db.Social_Media.find({}, { User_Name:1, Friends_List:1, _id:0 }).forEach(printjson);
+
+// 4 ids and friends for users with >5 friends
+db.Social_Media.find({ No_of_Friends: { $gt: 5 } }, { User_Id:1, Friends_List:1, _id:0 }).forEach(printjson);
+
+// 5 sort by posts desc
+db.Social_Media.find().sort({ No_of_Posts: -1 }).forEach(printjson);
